@@ -1,0 +1,1 @@
+web: gunicorn pharmagest_django.wsgi:application

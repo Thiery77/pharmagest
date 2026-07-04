@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>PharmaGest - Tableau de bord</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7fc; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #2c3e50; color: white; }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; text-decoration: none; display: inline-block; }
+        .btn-ajouter { background: #27ae60; }
+        .btn-modifier { background: #f39c12; }
+        .btn-supprimer { background: #e74c3c; }
+        .alert { background: #ffe5e5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 PharmaGest - Tableau de bord</h1>
+        <div style="text-align: right; margin-bottom: 10px;">
+           {% if user.is_authenticated %}
+              <span>👤 {{ user.username }}</span>
+              <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px;">Déconnexion</button>
+              </form>
+           {% else %}
+              <a href="{% url 'login' %}" style="padding: 5px 15px; background: #2ecc71; color: white; border-radius: 4px; text-decoration: none;">Connexion</a>
+           {% endif %}
+        </div>
+        <form method="GET" style="margin-bottom: 20px;">
+           <input type="text" name="recherche" placeholder="Rechercher un médicament..." 
+                value="{{ request.GET.recherche }}" style="padding: 8px; width: 250px;">
+           <button type="submit" style="padding: 8px 15px; background: #2980b9; color: white; border: none; border-radius: 4px;">🔍 Rechercher</button>
+        </form>
+        <a href="{% url 'ajouter' %}"><button class="btn btn-ajouter">➕ Ajouter un médicament</button></a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Code-barres</th>
+                    <th>Quantité</th>
+                    <th>Péremption</th>
+                    <th>Prix vente</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in medicaments %}
+                <tr class="{% if m.quantite <= m.seuil_alerte %}alert{% endif %}">
+                    <td>{{ m.nom }}</td>
+                    <td>{{ m.code_barres|default:"-" }}</td>
+                    <td>{{ m.quantite }}</td>
+                    <td>{{ m.date_peremption|default:"-" }}</td>
+                    <td>{{ m.prix_vente|default:"-" }} €</td>
+                    <td>
+                        <a href="{% url 'modifier' m.id %}"><button class="btn btn-modifier">Modifier</button></a>
+                        <a href="{% url 'supprimer' m.id %}"><button class="btn btn-supprimer">Supprimer</button></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
