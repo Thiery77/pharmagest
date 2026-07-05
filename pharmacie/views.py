@@ -81,7 +81,7 @@ def modifier_medicament(request, id):
             return redirect('tableau')
     else:
         form = MedicamentForm(instance=medicament)
-    return render(request, 'modifier.html', {'form': form, 'medicament': medicament})
+    return render(request, 'modifier.html', {'form': form})
 
 # Vue pour supprimer un médicament
 def supprimer_medicament(request, id):
