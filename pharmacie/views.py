@@ -4,6 +4,9 @@ from .forms import MedicamentForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Medicament, AlerteConfig
+import qrcode
+from io import BytesIO
+from django.http import HttpResponse
 
 def verifier_et_envoyer_alertes():
     medicaments = Medicament.objects.all()
@@ -98,3 +101,16 @@ def supprimer_medicament(request, id):
         medicament.delete()
         return redirect('tableau')
     return render(request, 'supprimer.html', {'medicament': medicament})
+
+import qrcode
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
+
+def generer_qr_code(request, id):
+    medicament = Medicament.objects.get(id=id)
+    data = f"{medicament.nom}\n{medicament.code_barres}"
+    qr = qrcode.make(data)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    return HttpResponse(buffer.getvalue(), content_type="image/png")

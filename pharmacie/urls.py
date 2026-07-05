@@ -6,4 +6,5 @@ urlpatterns = [
     path('ajouter/', views.ajouter_medicament, name='ajouter'),
     path('modifier/<int:id>/', views.modifier_medicament, name='modifier'),
     path('supprimer/<int:id>/', views.supprimer_medicament, name='supprimer'),
+    path('qr/<int:id>/', views.generer_qr_code, name='qr_code'),
 ]

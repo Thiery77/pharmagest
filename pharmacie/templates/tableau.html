@@ -68,6 +68,7 @@
                             <td>
                                 <a href="{% url 'modifier' m.id %}" class="btn btn-warning btn-sm btn-action">✏️ Modifier</a>
                                 <a href="{% url 'supprimer' m.id %}" class="btn btn-danger btn-sm btn-action">🗑 Supprimer</a>
+                                <a href="{% url 'qr_code' m.id %}" target="_blank" class="btn btn-info btn-sm btn-action">🖨️ Étiquette</a>
                             </td>
                         </tr>
                         {% endfor %}

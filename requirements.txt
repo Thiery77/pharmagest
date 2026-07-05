@@ -29,6 +29,7 @@ matplotlib-inline==0.2.2
 nest-asyncio2==1.7.2
 packaging==26.2
 parso==0.8.7
+pillow==12.3.0
 platformdirs==4.10.0
 prompt_toolkit==3.0.52
 psutil==7.2.2
@@ -36,6 +37,7 @@ pure_eval==0.2.3
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
 pyzmq==27.1.0
+qrcode==8.2
 redis==3.5.3
 setuptools==65.5.0
 six==1.17.0
@@ -48,4 +50,3 @@ tzdata==2026.2
 tzlocal==5.4.4
 vine==5.1.0
 wcwidth==0.8.1
-gunicorn==23.0.0
