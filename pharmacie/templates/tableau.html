@@ -103,7 +103,7 @@
             nom: "{{ m.nom }}",
             quantite: {{ m.quantite }},
             peremption: "{{ m.date_peremption|default:'' }}",
-            alerte: {{ m.quantite <= m.seuil_alerte|yesno:"true,false" }}
+            alerte: {{ m.en_alerte|yesno:"true,false" }}
         },
         {% endfor %}
     ];

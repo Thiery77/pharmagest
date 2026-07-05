@@ -49,8 +49,16 @@ def verifier_et_envoyer_alertes():
 
 # Vue pour le tableau de bord
 def tableau_de_bord(request):
-    # Récupérer tous les médicaments
     medicaments = Medicament.objects.all()
+    recherche = request.GET.get('recherche')
+    if recherche:
+        medicaments = medicaments.filter(nom__icontains=recherche)
+    
+    # Ajouter un champ "en_alerte" à chaque médicament
+    for m in medicaments:
+        m.en_alerte = m.quantite <= m.seuil_alerte
+    
+    return render(request, 'tableau.html', {'medicaments': medicaments})
     
     # Si une recherche est faite
     recherche = request.GET.get('recherche')
