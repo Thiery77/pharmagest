@@ -7,6 +7,11 @@ from .models import Medicament, AlerteConfig
 import qrcode
 from io import BytesIO
 from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
+from django.http import FileResponse
+import io
 
 def verifier_et_envoyer_alertes():
     medicaments = Medicament.objects.all()
@@ -114,3 +119,47 @@ def generer_qr_code(request, id):
     buffer = BytesIO()
     qr.save(buffer, format="PNG")
     return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+def exporter_pdf(request):
+    medicaments = Medicament.objects.all()
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    
+    # Titre
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(30 * mm, height - 30 * mm, "Rapport de stock - PharmaGest")
+    
+    # En-têtes du tableau
+    c.setFont("Helvetica-Bold", 12)
+    y = height - 50 * mm
+    c.drawString(20 * mm, y, "Nom")
+    c.drawString(80 * mm, y, "Code-barres")
+    c.drawString(140 * mm, y, "Quantité")
+    c.drawString(200 * mm, y, "Prix vente")
+    
+    # Contenu
+    c.setFont("Helvetica", 10)
+    y -= 10 * mm
+    for m in medicaments:
+        c.drawString(20 * mm, y, m.nom)
+        c.drawString(80 * mm, y, str(m.code_barres))
+        c.drawString(140 * mm, y, str(m.quantite))
+        c.drawString(200 * mm, y, f"{m.prix_vente} €")
+        y -= 8 * mm
+        
+        # Nouvelle page si nécessaire
+        if y < 20 * mm:
+            c.showPage()
+            y = height - 30 * mm
+            c.setFont("Helvetica-Bold", 12)
+            c.drawString(20 * mm, y, "Nom")
+            c.drawString(80 * mm, y, "Code-barres")
+            c.drawString(140 * mm, y, "Quantité")
+            c.drawString(200 * mm, y, "Prix vente")
+            c.setFont("Helvetica", 10)
+            y -= 10 * mm
+    
+    c.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="rapport_stock.pdf")
