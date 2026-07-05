@@ -13,6 +13,8 @@ from reportlab.lib.units import mm
 from django.http import FileResponse
 import io
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 def verifier_et_envoyer_alertes():
     medicaments = Medicament.objects.all()
@@ -169,3 +171,17 @@ def exporter_pdf(request):
     c.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename="rapport_stock.pdf")
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+def inscription(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('tableau')
+    else:
+        form = UserCreationForm()
+    return render(request, 'inscription.html', {'form': form})
