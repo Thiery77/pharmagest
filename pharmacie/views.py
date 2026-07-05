@@ -15,6 +15,8 @@ import io
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from .models import Medicament, AlerteConfig, Fournisseur  # Ajoute Fournisseur ici
+from .forms import MedicamentForm, FournisseurForm        # Ajoute FournisseurForm ici
 
 def verifier_et_envoyer_alertes():
     medicaments = Medicament.objects.all()
@@ -134,7 +136,7 @@ def exporter_pdf(request):
     medicaments = Medicament.objects.all()
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
-    width, height = A4
+    width, height = A4 
     
     # Titre
     c.setFont("Helvetica-Bold", 16)
@@ -173,6 +175,22 @@ def exporter_pdf(request):
     c.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename="rapport_stock.pdf")
+
+@login_required
+def liste_fournisseurs(request):
+    fournisseurs = Fournisseur.objects.all()
+    return render(request, 'fournisseurs.html', {'fournisseurs': fournisseurs})
+
+@login_required
+def ajouter_fournisseur(request):
+    if request.method == 'POST':
+        form = FournisseurForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_fournisseurs')
+    else:
+        form = FournisseurForm()
+    return render(request, 'ajouter_fournisseur.html', {'form': form}) 
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
