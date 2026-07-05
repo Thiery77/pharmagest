@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Supprimer un médicament - PharmaGest</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7fc; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; text-align: center; }
+        h1 { color: #e74c3c; }
+        .btn-confirmer { padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-annuler { padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚠️ Supprimer un médicament</h1>
+        <p>Voulez-vous vraiment supprimer <strong>{{ medicament.nom }}</strong> ?</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirmer">Oui, supprimer</button>
+            <a href="{% url 'tableau' %}" class="btn-annuler">Annuler</a>
+        </form>
+    </div>
+</body>
+</html>
