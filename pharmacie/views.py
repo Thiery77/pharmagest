@@ -12,6 +12,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from django.http import FileResponse
 import io
+from django.contrib.auth.decorators import login_required
 
 def verifier_et_envoyer_alertes():
     medicaments = Medicament.objects.all()
@@ -75,6 +76,7 @@ def tableau_de_bord(request):
     
     return render(request, 'tableau.html', {'medicaments': medicaments})
 # Vue pour ajouter un médicament
+@login_required
 def ajouter_medicament(request):
     if request.method == 'POST':
         print("➡️ On est dans le POST")  # <-- Ajoute ça
@@ -88,6 +90,7 @@ def ajouter_medicament(request):
         form = MedicamentForm()
     return render(request, 'ajouter.html', {'form': form})
 # Vue pour modifier un médicament
+@login_required
 def modifier_medicament(request, id):
     medicament = Medicament.objects.get(id=id)
     if request.method == 'POST':
@@ -100,6 +103,7 @@ def modifier_medicament(request, id):
     return render(request, 'modifier.html', {'form': form})
 
 # Vue pour supprimer un médicament
+@login_required
 def supprimer_medicament(request, id):
     medicament = Medicament.objects.get(id=id)
     if request.method == 'POST':
@@ -112,6 +116,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 
+@login_required
 def generer_qr_code(request, id):
     medicament = Medicament.objects.get(id=id)
     data = f"{medicament.nom}\n{medicament.code_barres}"
@@ -120,6 +125,7 @@ def generer_qr_code(request, id):
     qr.save(buffer, format="PNG")
     return HttpResponse(buffer.getvalue(), content_type="image/png")
 
+@login_required
 def exporter_pdf(request):
     medicaments = Medicament.objects.all()
     buffer = io.BytesIO()

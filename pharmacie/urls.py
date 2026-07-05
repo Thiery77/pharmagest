@@ -8,4 +8,5 @@ urlpatterns = [
     path('supprimer/<int:id>/', views.supprimer_medicament, name='supprimer'),
     path('qr/<int:id>/', views.generer_qr_code, name='qr_code'),
     path('exporter-pdf/', views.exporter_pdf, name='exporter_pdf'),
+    path('inscription/', views.inscription, name='inscription'),
 ]
