@@ -1,10 +1,12 @@
 from django import forms
-from .models import Medicament
+from .models import Medicament, Fournisseur
 
 class MedicamentForm(forms.ModelForm):
     class Meta:
         model = Medicament
-        fields = '__all__'  # Tous les champs du modèle
-        widgets = {
-            'date_peremption': forms.DateInput(attrs={'type': 'date'}),
-        }
+        fields = '__all__'
+
+class FournisseurForm(forms.ModelForm):
+    class Meta:
+        model = Fournisseur
+        fields = '__all__'
