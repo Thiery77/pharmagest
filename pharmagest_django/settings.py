@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-m6us2y=200f&9o*zy#hpwlwvywn2#s5j@15eliv*$k*io&b4oz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pharmagest.onrender.com', 'localhost', '127.0.0.1']
 
 
 
