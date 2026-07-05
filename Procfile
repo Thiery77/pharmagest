@@ -1,1 +1,1 @@
-web: gunicorn pharmagest_django.wsgi:application
+web: python manage.py migrate && gunicorn pharmagest_django.wsgi:application
