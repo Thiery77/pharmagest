@@ -11,19 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
-def inscription(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Connecte automatiquement après inscription
-            return redirect('tableau')
-    else:
-        form = UserCreationForm()
-    return render(request, 'inscription.html', {'form': form})
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
