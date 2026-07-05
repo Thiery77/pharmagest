@@ -59,6 +59,8 @@ def verifier_et_envoyer_alertes():
                     print(f"[SMS] {message} -> {config.telephone}")
 
 # Vue pour le tableau de bord
+def accueil(request):
+    return render(request, 'accueil.html')
 def tableau_de_bord(request):
     medicaments = Medicament.objects.all()
     recherche = request.GET.get('recherche')
