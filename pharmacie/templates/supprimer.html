@@ -2,24 +2,21 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supprimer un médicament - PharmaGest</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f7fc; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; text-align: center; }
-        h1 { color: #e74c3c; }
-        .btn-confirmer { padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .btn-annuler { padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>⚠️ Supprimer un médicament</h1>
-        <p>Voulez-vous vraiment supprimer <strong>{{ medicament.nom }}</strong> ?</p>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn-confirmer">Oui, supprimer</button>
-            <a href="{% url 'tableau' %}" class="btn-annuler">Annuler</a>
-        </form>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 text-center">
+            <h2 class="text-danger mb-4">⚠️ Supprimer un médicament</h2>
+            <p class="lead">Voulez-vous vraiment supprimer <strong>{{ medicament.nom }}</strong> ?</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                <a href="{% url 'tableau' %}" class="btn btn-secondary">Annuler</a>
+            </form>
+        </div>
     </div>
 </body>
 </html>
